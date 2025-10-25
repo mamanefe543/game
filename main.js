@@ -20,20 +20,19 @@ treeImg.src = 'assets/tree.png';
 const bgMusic = new Audio('assets/music.mp3');
 bgMusic.loop = true;
 
-// Cihaz kontrolü
 const isMobile = /Mobi|Android/i.test(navigator.userAgent);
 
 // Karakter ve düşman boyutu
 let player = {
     x: 50,
-    y: canvas.height/2 - 32,
-    width: isMobile ? 90 : 64,
-    height: isMobile ? 90 : 64,
+    y: canvas.height/2 - 45,
+    width: isMobile ? 100 : 64,
+    height: isMobile ? 100 : 64,
     speed: 5
 };
 
-let treeWidth = isMobile ? 90 : 64;
-let treeHeight = isMobile ? 90 : 64;
+let treeWidth = isMobile ? 100 : 64;
+let treeHeight = isMobile ? 100 : 64;
 
 let trees = [];
 let spawnTimer = 0;
@@ -45,10 +44,11 @@ let keys = {};
 let touchStartY = null;
 let touchEndY = null;
 
-document.addEventListener('keydown', e => keys[e.key] = true);
-document.addEventListener('keyup', e => keys[e.key] = false);
+// Klavye kontrolü (PC)
+document.addEventListener('keydown', e => { if(!isMobile) keys[e.key] = true; });
+document.addEventListener('keyup', e => { if(!isMobile) keys[e.key] = false; });
 
-// Mobil swipe
+// Mobil swipe hareket
 if(isMobile){
     canvas.addEventListener('touchstart', e => {
         touchStartY = e.touches[0].clientY;
@@ -58,12 +58,11 @@ if(isMobile){
         touchEndY = e.touches[0].clientY;
         let delta = touchStartY - touchEndY;
 
-        if(delta > 20 && player.y > 0){ // yukarı swipe
-            player.y -= player.speed;
-            touchStartY = touchEndY; // devamlı hareket için reset
-        } 
-        else if(delta < -20 && player.y + player.height < canvas.height){ // aşağı swipe
-            player.y += player.speed;
+        if(Math.abs(delta) > 5){  // hassasiyet eşiği
+            // mobilde hızlı swipe
+            player.y -= delta * 1.2;  // hız artırıldı
+            if(player.y < 0) player.y = 0;
+            if(player.y + player.height > canvas.height) player.y = canvas.height - player.height;
             touchStartY = touchEndY;
         }
     });
@@ -108,7 +107,7 @@ function playerDied() {
 function update() {
     if(gameOver) return;
 
-    // Klavye
+    // Klavye hareketi (PC)
     if(!isMobile){
         if(keys['ArrowUp'] && player.y > 0) player.y -= player.speed;
         if(keys['ArrowDown'] && player.y + player.height < canvas.height) player.y += player.speed;
