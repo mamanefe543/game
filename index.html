@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<title>Enes Batur Kaçış Oyunu</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<!-- Başlangıç menüsü -->
+<div id="startMenu">
+  <h1>Enes Batur Kaçış Oyunu</h1>
+  <button id="startBtn">Başla</button>
+</div>
+
+<!-- Oyun bitti overlay -->
+<div id="overlay" style="display:none;">
+  <h1>Oyun Bitti!</h1>
+  <p id="finalScore"></p>
+  <button id="restartBtn">Tekrar Oyna</button>
+</div>
+
+<!-- Canvas -->
+<canvas id="gameCanvas"></canvas>
+
+<!-- Mobil butonlar -->
+<div id="touchControls">
+  <button id="upBtn">▲</button>
+  <button id="downBtn">▼</button>
+</div>
+
+<script src="main.js"></script>
+</body>
+</html>
